@@ -44,6 +44,8 @@ const withAuth = (WrappedComponent) => {
     const login = async (email, password) => {
       const response = await axiosInstance.post('/auth/login', { email, password });
       const userData = response.data.user;
+      const token = response.data.token;
+      if (token) localStorage.setItem('token', token);
       localStorage.setItem('user', JSON.stringify(userData));
       setUser(userData);
       return response.data;
@@ -52,6 +54,8 @@ const withAuth = (WrappedComponent) => {
     const register = async (username, email, password, role) => {
       const response = await axiosInstance.post('/auth/register', { username, email, password, role });
       const userData = response.data.user;
+      const token = response.data.token;
+      if (token) localStorage.setItem('token', token);
       localStorage.setItem('user', JSON.stringify(userData));
       setUser(userData);
       return response.data;
