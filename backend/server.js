@@ -16,7 +16,8 @@ const allowedOrigins = [
   'http://localhost:5174',
   'https://mern-stack-website-eight.vercel.app',
   'https://mern-stack-website.vercel.app',
-  'https://mern-stack-website-nx8g.vercel.app'
+  'https://mern-stack-website-nx8g.vercel.app',
+  'https://mern-stack-website-nx8g-387w5sv3z-priyanshshadas-projects.vercel.app'
 ].filter(Boolean);
 
 app.use(cors({
