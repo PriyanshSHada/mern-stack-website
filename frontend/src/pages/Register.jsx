@@ -21,7 +21,11 @@ const Register = ({ register }) => {
       if (storedUser?.role === 'admin') navigate('/admin/dashboard');
       else if (storedUser?.role === 'manager') navigate('/manager/dashboard');
       else navigate('/user/dashboard');
-    } catch (err) { setError(err.response?.data?.message || 'Registration failed'); }
+    } catch (err) {
+      const msg = err.response?.data?.message || err.message || 'Registration failed';
+      console.error('Register error:', err);
+      setError(msg);
+    }
   };
 
   return (

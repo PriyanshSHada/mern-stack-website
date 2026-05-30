@@ -15,7 +15,11 @@ const Login = ({ login }) => {
       if (user.role === 'admin') navigate('/admin/dashboard');
       else if (user.role === 'manager') navigate('/manager/dashboard');
       else navigate('/user/dashboard');
-    } catch (err) { setError(err.response?.data?.message || 'Login failed'); }
+    } catch (err) {
+      const msg = err.response?.data?.message || err.message || 'Login failed';
+      console.error('Login error:', err);
+      setError(msg);
+    }
   };
 
   return (
