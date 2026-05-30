@@ -32,14 +32,14 @@ const Login = ({ login }) => {
       <div
         style={{
           background: 'white',
-          borderRadius: '12px',
+          borderRadius: '4px',
           padding: '32px',
           width: '100%',
           maxWidth: '400px',
           boxShadow: '0 10px 40px rgba(0,0,0,0.2)'
         }}
       >
-        <h2 style={{ fontSize: '28px', fontWeight: 'bold', textAlign: 'center', color: '#1f2937', marginBottom: '24px' }}>
+        <h2 style={{ fontSize: '22px', fontWeight: 'bold', textAlign: 'center', color: '#1f2937', marginBottom: '24px' }}>
           Login
         </h2>
         
@@ -102,9 +102,9 @@ const Login = ({ login }) => {
               background: '#2563eb',
               color: 'white',
               border: 'none',
-              borderRadius: '8px',
-              fontSize: '15px',
-              fontWeight: '600',
+              borderRadius: '4px',
+              fontSize: '14px',
+              fontWeight: '500',
               cursor: 'pointer',
               transition: 'background 0.2s'
             }}

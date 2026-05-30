@@ -36,8 +36,12 @@ mongoose.connect(process.env.MONGODB_URI)
   .then(() => { console.log('MongoDB connected'); dbConnected = true; })
   .catch((err) => {
     console.error('MongoDB error:', err.message);
-    console.error('Please whitelist your IP in MongoDB Atlas: https://cloud.mongodb.com → Network Access → Add IP Address');
+    console.error('Please check your MONGODB_URI credentials in backend/.env');
   });
+
+mongoose.connection.on('connected', () => { dbConnected = true; console.log('MongoDB event: connected'); });
+mongoose.connection.on('disconnected', () => { dbConnected = false; console.log('MongoDB event: disconnected'); });
+mongoose.connection.on('error', (err) => { console.error('MongoDB event: error', err.message); });
 
 const userSchema = new mongoose.Schema({
   username: { type: String, required: true, unique: true },
@@ -86,30 +90,49 @@ app.get('/api/health', (req, res) => {
 });
 
 app.post('/api/auth/register', async (req, res) => {
+  console.log('>>> REGISTER payload:', req.body);
   if (!dbConnected) return res.status(503).json({ message: 'Database not connected. Please whitelist your IP in MongoDB Atlas.' });
   try {
     const { username, email, password, role } = req.body;
+    if (!username || !email || !password) {
+      return res.status(400).json({ message: 'Missing required fields' });
+    }
+    const allowedRoles = ['user', 'manager', 'admin'];
+    const safeRole = allowedRoles.includes(role) ? role : 'user';
     const existing = await User.findOne({ $or: [{ email }, { username }] });
-    if (existing) return res.status(400).json({ message: 'User exists' });
-    const user = await User.create({ username, email, password, role: role || 'user' });
+    if (existing) return res.status(400).json({ message: 'User already exists' });
+    const user = await User.create({ username, email, password, role: safeRole });
+    console.log('>>> USER CREATED:', { id: user._id, username: user.username, role: user.role });
     const token = jwt.sign({ userId: user._id, role: user.role }, process.env.JWT_SECRET, { expiresIn: '7d' });
     res.cookie('token', token, { httpOnly: true, secure: true, sameSite: 'none', maxAge: 7 * 24 * 60 * 60 * 1000 });
     res.status(201).json({ message: 'Registered', token, user: { id: user._id, username: user.username, email: user.email, role: user.role } });
   } catch (error) {
+    console.error('>>> REGISTER ERROR:', error.message);
     res.status(500).json({ message: 'Server error', error: error.message });
   }
 });
 
 app.post('/api/auth/login', async (req, res) => {
+  console.log('>>> LOGIN attempt:', req.body.email);
   if (!dbConnected) return res.status(503).json({ message: 'Database not connected. Please whitelist your IP in MongoDB Atlas.' });
   try {
     const { email, password } = req.body;
     const user = await User.findOne({ email });
-    if (!user || !await user.comparePassword(password)) return res.status(401).json({ message: 'Invalid credentials' });
+    if (!user) {
+      console.log('>>> LOGIN FAIL: user not found for', email);
+      return res.status(401).json({ message: 'Invalid credentials' });
+    }
+    const valid = await user.comparePassword(password);
+    if (!valid) {
+      console.log('>>> LOGIN FAIL: wrong password for', email);
+      return res.status(401).json({ message: 'Invalid credentials' });
+    }
+    console.log('>>> LOGIN SUCCESS:', { id: user._id, username: user.username, role: user.role });
     const token = jwt.sign({ userId: user._id, role: user.role }, process.env.JWT_SECRET, { expiresIn: '7d' });
     res.cookie('token', token, { httpOnly: true, secure: true, sameSite: 'none', maxAge: 7 * 24 * 60 * 60 * 1000 });
     res.json({ message: 'Login success', token, user: { id: user._id, username: user.username, email: user.email, role: user.role } });
   } catch (error) {
+    console.error('>>> LOGIN ERROR:', error.message);
     res.status(500).json({ message: 'Server error', error: error.message });
   }
 });

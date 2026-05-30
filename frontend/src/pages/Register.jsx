@@ -17,7 +17,10 @@ const Register = ({ register }) => {
     
     try {
       await register(formData.username, formData.email, formData.password, formData.role);
-      navigate('/login');
+      const storedUser = JSON.parse(localStorage.getItem('user'));
+      if (storedUser?.role === 'admin') navigate('/admin/dashboard');
+      else if (storedUser?.role === 'manager') navigate('/manager/dashboard');
+      else navigate('/user/dashboard');
     } catch (err) { setError(err.response?.data?.message || 'Registration failed'); }
   };
 
@@ -35,14 +38,14 @@ const Register = ({ register }) => {
       <div
         style={{
           background: 'white',
-          borderRadius: '12px',
+          borderRadius: '4px',
           padding: '32px',
           width: '100%',
           maxWidth: '450px',
           boxShadow: '0 10px 40px rgba(0,0,0,0.2)'
         }}
       >
-        <h2 style={{ fontSize: '28px', fontWeight: 'bold', textAlign: 'center', color: '#1f2937', marginBottom: '24px' }}>
+        <h2 style={{ fontSize: '22px', fontWeight: 'bold', textAlign: 'center', color: '#1f2937', marginBottom: '24px' }}>
           Register
         </h2>
         
@@ -170,9 +173,9 @@ const Register = ({ register }) => {
               background: '#16a34a',
               color: 'white',
               border: 'none',
-              borderRadius: '8px',
-              fontSize: '15px',
-              fontWeight: '600',
+              borderRadius: '4px',
+              fontSize: '14px',
+              fontWeight: '500',
               cursor: 'pointer'
             }}
             onMouseEnter={(e) => e.target.style.background = '#15803d'}

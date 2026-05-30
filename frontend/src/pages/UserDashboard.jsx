@@ -15,7 +15,7 @@ const UserDashboard = ({ user, logout }) => {
   const containerStyle = {
     minHeight: '100vh',
     background: '#f5f6fa',
-    paddingTop: '60px'
+    paddingTop: '56px'
   };
 
   const contentStyle = {
@@ -42,19 +42,19 @@ const UserDashboard = ({ user, logout }) => {
   const roleBadge = {
     background: '#dbeafe',
     color: '#1e40af',
-    fontSize: '12px',
+    fontSize: '11px',
     fontWeight: 500,
-    padding: '4px 12px',
+    padding: '3px 10px',
     borderRadius: '9999px',
     textTransform: 'capitalize'
   };
 
   const btnBase = {
-    padding: '12px 24px',
+    padding: '10px 20px',
     color: 'white',
     border: 'none',
-    borderRadius: '12px',
-    fontSize: '14px',
+    borderRadius: '6px',
+    fontSize: '13px',
     fontWeight: 600,
     cursor: 'pointer',
     width: '100%'
@@ -63,20 +63,20 @@ const UserDashboard = ({ user, logout }) => {
   return (
     <div style={containerStyle}>
       <Navbar user={user} logout={handleLogout} />
-      
+
       <div style={contentStyle}>
-        <div style={{ marginBottom: '24px' }}>
-          <h1 style={{ fontSize: '24px', fontWeight: 'bold', color: '#1f2937' }}>User Dashboard</h1>
-          <p style={{ color: '#6b7280', fontSize: '14px', marginTop: '4px' }}>Welcome back, {user?.username}!</p>
-        </div>
+        <Card style={{ marginBottom: '24px', borderRadius: '8px' }}>
+          <h1 style={{ fontSize: '20px', fontWeight: 'bold', color: '#1f2937', marginBottom: '6px' }}>User Dashboard</h1>
+          <p style={{ color: '#6b7280', fontSize: '13px' }}>Welcome, {user?.username}!</p>
+        </Card>
 
         <div style={grid2Col}>
           <StatisticsCard title="My Tasks" value="5" icon="tasks" color="blue" />
-          <StatisticsCard title="Notifications" value="3" icon="activity" color="green" />
+          <StatisticsCard title="Notifications" value="3" icon="bell" color="green" />
         </div>
 
         <Card style={{ marginBottom: '24px' }}>
-          <h2 style={{ fontSize: '18px', fontWeight: 'bold', color: '#1f2937', marginBottom: '16px' }}>Your Information</h2>
+          <h2 style={{ fontSize: '16px', fontWeight: 'bold', color: '#1f2937', marginBottom: '16px' }}>Your Information</h2>
           <div>
             <div style={infoRow}>
               <span style={{ color: '#6b7280', fontSize: '14px' }}>Name</span>
