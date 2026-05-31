@@ -84,8 +84,8 @@ const withRoleProtection = (WrappedComponent, allowedRoles) => {
 };
 
 const UserDashboardWithAuth = withAuth(UserDashboard);
-const ManagerDashboardWithAuth = withRoleProtection(withAuth(ManagerDashboard), ['manager', 'admin']);
-const AdminDashboardWithAuth = withRoleProtection(withAuth(AdminDashboard), ['admin']);
+const ManagerDashboardWithAuth = withAuth(withRoleProtection(ManagerDashboard, ['manager', 'admin']));
+const AdminDashboardWithAuth = withAuth(withRoleProtection(AdminDashboard, ['admin']));
 
 function App() {
   return (
