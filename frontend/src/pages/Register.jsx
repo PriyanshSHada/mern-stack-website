@@ -17,10 +17,8 @@ const Register = ({ register }) => {
     
     try {
       await register(formData.username, formData.email, formData.password, formData.role);
-      const storedUser = JSON.parse(localStorage.getItem('user'));
-      if (storedUser?.role === 'admin') navigate('/admin/dashboard');
-      else if (storedUser?.role === 'manager') navigate('/manager/dashboard');
-      else navigate('/user/dashboard');
+      // Registration successful - redirect to login (separate login required)
+      navigate('/login');
     } catch (err) {
       const msg = err.response?.data?.message || err.message || 'Registration failed';
       console.error('Register error:', err);

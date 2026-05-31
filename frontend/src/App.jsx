@@ -53,11 +53,8 @@ const withAuth = (WrappedComponent) => {
 
     const register = async (username, email, password, role) => {
       const response = await axiosInstance.post('/auth/register', { username, email, password, role });
-      const userData = response.data.user;
-      const token = response.data.token;
-      if (token) localStorage.setItem('token', token);
-      localStorage.setItem('user', JSON.stringify(userData));
-      setUser(userData);
+      // Registration successful - but don't auto-login
+      // User must login separately
       return response.data;
     };
 
