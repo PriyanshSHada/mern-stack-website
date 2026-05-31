@@ -101,7 +101,17 @@ const UserDashboard = ({ user, logout }) => {
         </div>
 
         <div style={grid2Col}>
-          {/* User can only access their own dashboard - no access to Manager or Admin */}
+          {/* Back button for Manager or Admin visiting User dashboard */}
+          {user?.role === 'manager' && (
+            <button onClick={() => navigate('/manager/dashboard')} style={{ ...btnBase, background: '#7c3aed' }}>
+              ← Back to Manager Dashboard
+            </button>
+          )}
+          {user?.role === 'admin' && (
+            <button onClick={() => navigate('/admin/dashboard')} style={{ ...btnBase, background: '#dc2626' }}>
+              ← Back to Admin Dashboard
+            </button>
+          )}
         </div>
       </div>
     </div>
