@@ -85,9 +85,6 @@ const ManagerDashboard = ({ user, logout }) => {
           <button onClick={() => navigate('/user/dashboard')} style={{ ...btnBase, background: '#2563eb' }}>
             View User Dashboard
           </button>
-          <button onClick={() => navigate('/admin/dashboard')} style={{ ...btnBase, background: '#dc2626' }}>
-            Go to Admin Dashboard
-          </button>
         </div>
       </div>
     </div>
